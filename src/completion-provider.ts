@@ -1,3 +1,7 @@
+import { getSavedCommands } from './command.store';
+
 export function getSuggestedCommands(prompt: string): string[] {
-  return Math.random() > 0.5 ? ['git pull', 'git clone', 'git checkout'] : ['npx nx run serve'];
+  const savedCommands = getSavedCommands();
+
+  return savedCommands?.filter((savedCommand) => savedCommand.startsWith(prompt));
 }

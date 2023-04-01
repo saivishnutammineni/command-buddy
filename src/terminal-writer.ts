@@ -39,7 +39,13 @@ export class TerminalWriter {
   }
 
   public goDown() {
+    this.write('\n');
     this.write(AnsiEscapes.DOWN);
+    return this;
+  }
+
+  public newLine() {
+    this.goDown().write(AnsiEscapes.LEFT_START);
     return this;
   }
 

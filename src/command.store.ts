@@ -1,13 +1,26 @@
-let commands: any[];
+import * as vscode from 'vscode';
 
-export function loadCommandCompletions() {
-	return;
+let extensionContext: vscode.ExtensionContext;
+
+const COMMAND_STORAGE_KEY = 'MCB_COMPLETION_COMMANDS';
+
+export function init(context: vscode.ExtensionContext) {
+  extensionContext = context;
 }
 
 export function getSavedCommands() {
-	return;
+  const commands = extensionContext.globalState.get<string[]>(COMMAND_STORAGE_KEY);
+  return commands;
 }
 
 export function saveCommand(command: string) {
-	return;
+  const savedCommands = getSavedCommands() ?? [];
+
+  if (savedCommands?.includes(command)) {
+    return;
+  }
+
+  savedCommands.push(command);
+
+  extensionContext.globalState.update(COMMAND_STORAGE_KEY, savedCommands);
 }

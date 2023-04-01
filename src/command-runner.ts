@@ -13,8 +13,13 @@ export class CommandRunner {
     return this._stdErr;
   }
 
+  public get end() {
+    return this._end;
+  }
+
   private _stdOut = new vscode.EventEmitter<string>();
   private _stdErr = new vscode.EventEmitter<string>();
+  private _end = new vscode.EventEmitter<void>();
   private _commandRunning: boolean;
   private commandProcess: ChildProcessWithoutNullStreams;
 
@@ -22,8 +27,8 @@ export class CommandRunner {
     this.commandProcess = spawn(command, [], { cwd: vscode.workspace?.workspaceFolders?.[0]?.uri?.fsPath, shell: true });
     this._commandRunning = true;
 
-    this.commandProcess.stdout.on('data', (data) => this._stdOut.fire(data?.toString()));
-    this.commandProcess.stderr.on('data', (data) => this._stdErr.fire(data?.toString()));
+    this.commandProcess.stdout.on('data', (data) => this._stdOut.fire(formatText(data?.toString())));
+    this.commandProcess.stderr.on('data', (data) => this._stdErr.fire(formatText(data?.toString())));
     this.commandProcess.on('exit', () => this.handleProcessEnd());
   }
 
@@ -33,9 +38,10 @@ export class CommandRunner {
   }
 
   private handleProcessEnd() {
+    this._end.fire();
     this._commandRunning = false;
     this.commandProcess = null;
-    this._stdOut.dispose();
-    this._stdErr.dispose();
   }
 }
+
+const formatText = (text: string) => `\r${text.split(/(\r?\n)/g).join('\r')}\r`;

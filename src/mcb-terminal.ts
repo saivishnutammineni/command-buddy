@@ -138,18 +138,34 @@ export class McbTerminal {
   }
 
   private runCommand(command: string) {
+    this.suggest([]);
+    // move to new line before writing output from command process
+    this.terminalWriter.newLine();
+
+    const subscriptions: vscode.Disposable[] = [];
     try {
-      this.commandRunner.stdOut.event((stdOut) => {
+      const stdOutSubscription = this.commandRunner.stdOut.event((stdOut) => {
         this.terminalWriter.write(stdOut);
       });
+      subscriptions.push(stdOutSubscription);
 
-      this.commandRunner.stdErr.event((stdErr) => {
+      const stdErrSubscription = this.commandRunner.stdErr.event((stdErr) => {
         this.terminalWriter.write(stdErr);
+        this.terminalWriter.newLine();
+        subscriptions.forEach((subscription) => subscription?.dispose());
       });
+      subscriptions.push(stdErrSubscription);
+
+      const endSubscription = this.commandRunner.end.event(() => {
+        this.terminalWriter.newLine();
+        subscriptions.forEach((subscription) => subscription?.dispose());
+      });
+      subscriptions.push(endSubscription);
 
       this.commandRunner.execute(command);
     } catch (error: any) {
       this.terminalWriter.write(error?.message, { newLineAfterWrite: true, writeOnNewLine: true });
+      subscriptions.forEach((subscription) => subscription?.dispose());
     }
   }
 
