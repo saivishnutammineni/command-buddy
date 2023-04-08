@@ -22,7 +22,7 @@ export class McbTerminal {
   constructor() {
     const pty: vscode.Pseudoterminal = {
       onDidWrite: this.terminalWriter.events,
-      open: () => this.terminalWriter.write('Start typing to see the command auto completions\r\n\r\n'),
+      open: () => this.terminalWriter.write('Start typing to see the command auto completions\r\n\r\n>'),
       close: () => {
         // no op
       },
@@ -129,7 +129,7 @@ export class McbTerminal {
   private runCommand(command: string) {
     this.suggest([]);
     this.commandRunner.execute(command);
-    this.terminalWriter.clear();
+    this.terminalWriter.newLine().write('>');
   }
 
   private clearSuggestions() {

@@ -1,20 +1,7 @@
-# extension-terminal-sample
+# Command Buddy
 
 This extension shows how to leverage the extension terminal API stabilized in v1.39 that enables an extension to handle a terminal's input and emit output.
 
-## VS Code API
+Tired of Having to remembering the complete commands, navigating the command history to select a command or having to copy a command to terminal?
 
-### `vscode` module
-
-- [window.createTerminal](https://code.visualstudio.com/api/references/vscode-api#window.createTerminal)
-
-### Contribution Points
-
-- [`contributes.commands`](https://code.visualstudio.com/api/references/contribution-points#contributes.commands)
-
-## Running the Sample
-
-- Run `npm install` in terminal to install dependencies
-- Run the `Run Extension` target in the Debug View. This will:
-	- Start a task `npm: watch` to compile the code
-	- Run the extension in a new VS Code window
+This extension helps you by showing command auto completions as you start typing a command based on your previous command history.

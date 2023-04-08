@@ -29,11 +29,6 @@ export class TerminalWriter {
     return this;
   }
 
-  public clear() {
-    this.writeEvents.fire(AnsiEscapes.CLEAR_TERMINAL);
-    this.writeEvents.fire(AnsiEscapes.LEFT_START);
-  }
-
   public backspace() {
     // Move cursor backward
     this.write(AnsiEscapes.LEFT);

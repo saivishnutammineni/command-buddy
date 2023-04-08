@@ -3,16 +3,30 @@
 	"displayName": "extension-terminal-sample",
 	"description": "Command autocompletion in terminal",
 	"version": "1.0.0",
-	"publisher": "saivishnu",
+	"publisher": "SAIVISHNUCHOWDARYTAMMINENI",
 	"private": true,
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Microsoft/vscode-extension-samples"
+		"url": "https://github.com/saivishnutammineni/command-buddy"
 	},
 	"engines": {
 		"vscode": "^1.74.0"
 	},
+	"keywords": [
+		"Terminal",
+		"Commands",
+		"Autocomplete",
+		"Suggest",
+		"Command Autocomplete",
+		"Suggest Commands",
+		"History",
+		"Command History"
+	],
+	"author": {
+		"name": "Sai Vishnu"
+	},
+	"icon": "images/logo.jpg",
 	"categories": [
 		"Other"
 	],
