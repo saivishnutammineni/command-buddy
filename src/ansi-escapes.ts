@@ -11,6 +11,7 @@ export const AnsiEscapes = {
    */
   ERASE_TO_END: ESC + '0J',
   ERASE_CURRENT_LINE: ESC + '2K',
+  CLEAR_TERMINAL: ESC + '2J',
 };
 
 export const KeyCodes = {

@@ -5,7 +5,7 @@ import { saveCommand } from './command.store';
 import { getSuggestedCommands } from './completion-provider';
 import { TerminalWriter } from './terminal-writer';
 
-const SPECIAL_KEY_CODES = [KeyCodes.ENTER, KeyCodes.BACKSPACE, KeyCodes.TERMINATE];
+const SPECIAL_KEY_CODES = [KeyCodes.ENTER, KeyCodes.BACKSPACE];
 const SPECIAL_COMMANDS = [KeyCodes.UP_ARROW, KeyCodes.DOWN_ARROW, KeyCodes.TAB];
 
 /**
@@ -37,10 +37,6 @@ export class McbTerminal {
   }
 
   private terminalInputHandler(input: string) {
-    if (this.commandRunner.commandRunning) {
-      return;
-    }
-
     if (SPECIAL_KEY_CODES.includes(input)) {
       this.handleSpecialKeyCodes(input);
       return;
@@ -65,13 +61,6 @@ export class McbTerminal {
       this.handleBackspaceInput();
       return;
     }
-
-    if (input === KeyCodes.TERMINATE) {
-      if (!this.commandRunner.commandRunning) {
-        return;
-      }
-      this.commandRunner.terminate();
-    }
   }
 
   private handleSpecialCommands(input: string) {
@@ -80,7 +69,7 @@ export class McbTerminal {
         return;
       }
 
-      const commandCompletion = this.suggestedCommands[0].slice(this.command.length);
+      const commandCompletion = this.suggestedCommands[this.highlightedCommandIndex ?? 0].slice(this.command.length);
       this.handleCommandInput(commandCompletion);
       return;
     }
@@ -139,34 +128,8 @@ export class McbTerminal {
 
   private runCommand(command: string) {
     this.suggest([]);
-    // move to new line before writing output from command process
-    this.terminalWriter.newLine();
-
-    const subscriptions: vscode.Disposable[] = [];
-    try {
-      const stdOutSubscription = this.commandRunner.stdOut.event((stdOut) => {
-        this.terminalWriter.write(stdOut);
-      });
-      subscriptions.push(stdOutSubscription);
-
-      const stdErrSubscription = this.commandRunner.stdErr.event((stdErr) => {
-        this.terminalWriter.write(stdErr);
-        this.terminalWriter.newLine();
-        subscriptions.forEach((subscription) => subscription?.dispose());
-      });
-      subscriptions.push(stdErrSubscription);
-
-      const endSubscription = this.commandRunner.end.event(() => {
-        this.terminalWriter.newLine();
-        subscriptions.forEach((subscription) => subscription?.dispose());
-      });
-      subscriptions.push(endSubscription);
-
-      this.commandRunner.execute(command);
-    } catch (error: any) {
-      this.terminalWriter.write(error?.message, { newLineAfterWrite: true, writeOnNewLine: true });
-      subscriptions.forEach((subscription) => subscription?.dispose());
-    }
+    this.commandRunner.execute(command);
+    this.terminalWriter.clear();
   }
 
   private clearSuggestions() {
