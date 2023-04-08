@@ -1,6 +1,6 @@
 {
-	"name": "my-command-buddy",
-	"displayName": "extension-terminal-sample",
+	"name": "command-buddy",
+	"displayName": "Command Buddy",
 	"description": "Command autocompletion in terminal",
 	"version": "1.0.0",
 	"publisher": "SAIVISHNUCHOWDARYTAMMINENI",
@@ -36,7 +36,7 @@
 		"commands": [
 			{
 				"command": "myCommandBuddyTerminal.create",
-				"title": "New My Command Buddy Terminal"
+				"title": "New Command Buddy Terminal"
 			}
 		]
 	},
