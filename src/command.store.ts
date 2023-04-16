@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { Command } from './models/commands';
 
 let extensionContext: vscode.ExtensionContext;
 
@@ -9,18 +10,19 @@ export function init(context: vscode.ExtensionContext) {
 }
 
 export function getSavedCommands() {
-  const commands = extensionContext.globalState.get<string[]>(COMMAND_STORAGE_KEY);
+  const commands = extensionContext.globalState.get<Command[]>(COMMAND_STORAGE_KEY)?.filter((savedCommand) => !!savedCommand.command);
   return commands;
 }
 
 export function saveCommand(command: string) {
   const savedCommands = getSavedCommands() ?? [];
 
-  if (savedCommands?.includes(command)) {
-    return;
-  }
+  const updatedCommands = savedCommands?.filter((savedCommand) => savedCommand.command !== command);
 
-  savedCommands.push(command);
+  updatedCommands.unshift({
+    command,
+    lastUsed: new Date().toISOString(),
+  });
 
-  extensionContext.globalState.update(COMMAND_STORAGE_KEY, savedCommands);
+  extensionContext.globalState.update(COMMAND_STORAGE_KEY, updatedCommands);
 }
