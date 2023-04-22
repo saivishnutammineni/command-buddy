@@ -7,6 +7,7 @@ import { TerminalWriter } from './terminal-writer';
 
 const SPECIAL_KEY_CODES = [KeyCodes.ENTER, KeyCodes.BACKSPACE];
 const SPECIAL_COMMANDS = [KeyCodes.UP_ARROW, KeyCodes.DOWN_ARROW, KeyCodes.TAB];
+const COMMAND_REGEX = /[a-zA-Z0-9`~!@#$%^&*()[\]_\-+='";:|<>,.?{}\\/\s]+/;
 
 /**
  * A vscode pseudo terminal for providing command auto completions
@@ -47,6 +48,10 @@ export class McbTerminal {
       return;
     }
 
+    if (!COMMAND_REGEX.test(input)) {
+      return;
+    }
+
     this.handleCommandInput(input);
   }
 
@@ -69,8 +74,8 @@ export class McbTerminal {
         return;
       }
 
-      const commandCompletion = this.suggestedCommands[this.highlightedCommandIndex ?? 0].slice(this.command.length);
-      this.handleCommandInput(commandCompletion);
+      const commandCompletion = this.suggestedCommands[this.highlightedCommandIndex ?? 0];
+      this.handleCommandInput(commandCompletion, true);
       return;
     }
 
@@ -97,9 +102,16 @@ export class McbTerminal {
     }
   }
 
-  private handleCommandInput(input: string) {
-    this.command += input;
-    this.terminalWriter.write(input);
+  private handleCommandInput(input: string, replace = false) {
+    let charactersToDelete = 0;
+    if (replace) {
+      charactersToDelete = this.command?.length;
+      this.command = input;
+    } else {
+      this.command += input;
+    }
+
+    this.terminalWriter.write(input, { clearCharacters: charactersToDelete });
 
     if (this.command.length < 3) {
       return;

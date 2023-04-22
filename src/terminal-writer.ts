@@ -4,6 +4,10 @@ import { AnsiEscapes } from './ansi-escapes';
 export interface TerminalWriteOptions {
   writeOnNewLine?: boolean;
   newLineAfterWrite?: boolean;
+  /**
+   * Clears the given number of characters before writing
+   */
+  clearCharacters?: number;
 }
 
 export class TerminalWriter {
@@ -15,6 +19,13 @@ export class TerminalWriter {
 
   public write(content: string, options?: TerminalWriteOptions) {
     let text = content;
+
+    if (options?.clearCharacters && Number.isInteger(options.clearCharacters)) {
+      for (let i = 0; i < options.clearCharacters; i++) {
+        this.backspace();
+      }
+    }
+
     if (options?.writeOnNewLine) {
       text = '\n\r' + text;
     }

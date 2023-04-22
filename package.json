@@ -2,7 +2,7 @@
 	"name": "command-buddy",
 	"displayName": "Command Buddy",
 	"description": "Command autocompletion in terminal",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"publisher": "SAIVISHNUCHOWDARYTAMMINENI",
 	"private": true,
 	"license": "MIT",
@@ -35,8 +35,15 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "myCommandBuddyTerminal.create",
+				"command": "commandBuddyTerminal.create",
 				"title": "New Command Buddy Terminal"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "commandBuddyTerminal.create",
+				"key": "ctrl+c ctrl+b",
+				"mac": "cmd+c cmd+b"
 			}
 		]
 	},
@@ -44,7 +51,8 @@
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
-		"lint": "eslint \"src/**/*.ts\""
+		"lint": "eslint \"src/**/*.ts\"",
+		"package": "vsce package"
 	},
 	"devDependencies": {
 		"@types/node": "^16.11.7",
