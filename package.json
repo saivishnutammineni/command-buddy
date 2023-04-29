@@ -2,7 +2,7 @@
 	"name": "command-buddy",
 	"displayName": "Command Buddy",
 	"description": "Command autocompletion in terminal",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"publisher": "SAIVISHNUCHOWDARYTAMMINENI",
 	"private": true,
 	"license": "MIT",
@@ -42,8 +42,8 @@
 		"keybindings": [
 			{
 				"command": "commandBuddyTerminal.create",
-				"key": "ctrl+c ctrl+b",
-				"mac": "cmd+c cmd+b"
+				"key": "ctrl+k ctrl+b",
+				"mac": "cmd+k cmd+b"
 			}
 		]
 	},

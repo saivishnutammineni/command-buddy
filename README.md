@@ -7,7 +7,7 @@ This extension helps you by showing command auto completions as you start typing
 Usage:
 1. Create a new Command Buddy Terminal
 	1. Through command palette (F1) and select "New Command Buddy Terminal"
-	2. Use keyboard shortcut `ctrl+c` `ctrl+b` (for mac: `cmd+c` `cmd+b`)
+	2. Use keyboard shortcut `ctrl+k` `ctrl+b` (for mac: `cmd+k` `cmd+b`)
 2. Start typing to the see the command completions (Note: you can start typing any part of the command to see the suggestions)
 3. Use up and down arrow keys to navigate the command suggestions
 4. Press tab to select a command from command suggestions
