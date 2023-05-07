@@ -5,6 +5,7 @@ import { saveCommand } from './command.store';
 import { getSuggestedCommands } from './completion-provider';
 import { TerminalWriter } from './terminal-writer';
 
+export const COMMAND_BUDDY_TERMINAL_NAME = 'Command Buddy';
 const SPECIAL_KEY_CODES = [KeyCodes.ENTER, KeyCodes.BACKSPACE];
 const SPECIAL_COMMANDS = [KeyCodes.UP_ARROW, KeyCodes.DOWN_ARROW, KeyCodes.TAB];
 const COMMAND_REGEX = /[a-zA-Z0-9`~!@#$%^&*()[\]_\-+='";:|<>,.?{}\\/\s]+/;
@@ -31,7 +32,7 @@ export class McbTerminal {
     };
 
     this.terminal = vscode.window.createTerminal({
-      name: `Command Buddy`,
+      name: COMMAND_BUDDY_TERMINAL_NAME,
       pty,
     });
     this.terminal.show();
